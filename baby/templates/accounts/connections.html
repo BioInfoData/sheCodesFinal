@@ -1,0 +1,12 @@
+{% extends 'base_layout.html' %}s
+{% block content %}
+<h1>Details</h1>
+<h2> Hello {{user}} </h2>
+        <form method="post" style="margin-top: 1.3em;"  enctype="multipart/form-data">
+
+              {{ connection_form.as_p }}
+
+              {% csrf_token %}
+              <p><button type="submit">Submit</button></p>
+        </form>
+{% endblock %}

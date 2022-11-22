@@ -1,0 +1,7 @@
+{% render_field profile_form.name type="text" class="form-control" id="settings" placeholder="name" %}
+              {% render_field profile_form.email type="text" class="form-control" id="settings" placeholder="email" %}
+              {% render_field profile_form.phone type="text" class="form-control" id="settings" placeholder="phone" %}
+              {% render_field profile_form.type  class="form-control" id="settings"  %}
+              {% render_field profile_form.gender  class="form-control" id="settings"  %}
+              {% render_field profile_form.birth  class="form-control" id="settings"  %}
+              {% render_field profile_form.profileimg  class="form-control" id="settings"  %}
