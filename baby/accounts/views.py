@@ -112,9 +112,9 @@ def connections_view(request):
         return render(request, "accounts/connections.html", {'connection_form': connection_form})
 
 @login_required
-def feed_view(request, account):
+def feed_view(request, username):
     return render(request, 'accounts/feed.html')
 
 @login_required
-def wellcome_view(request, account):
+def wellcome_view(request):
     return render(request, 'accounts/wellcome.html')
