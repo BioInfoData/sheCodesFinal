@@ -14,6 +14,8 @@ class Profile(models.Model):
     CHOICES_GENDER = (("Male","Male"),
                     ("Female","Female"))
 
+
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     userid = models.IntegerField()
     type = models.CharField(max_length=300, choices = CHOICES_TYPE,blank=True)
@@ -22,7 +24,6 @@ class Profile(models.Model):
     email = models.CharField(max_length=100,blank=True)
     phone = models.IntegerField(default=0,blank=True)
     profileimg = models.ImageField(default='defaul_profile.jpg', blank=True) # TODO change the default img in assets
-
 
 
     def __str__(self):

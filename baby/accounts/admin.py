@@ -1,7 +1,10 @@
 from django.contrib import admin
 from .models import Profile, Details, Connection
 
-# Register your models here.
-admin.site.register(Profile)
+
+class ProfileAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
+
+admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Details)
 admin.site.register(Connection)

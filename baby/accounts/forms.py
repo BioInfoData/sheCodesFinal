@@ -24,6 +24,7 @@ class ConnectionForm(forms.ModelForm):
         self.fields['connected_user'] = forms.ModelMultipleChoiceField(queryset=Profile.objects.filter(type=type),
                                                                        widget=forms.CheckboxSelectMultiple())
 
+
     class Meta:
         model = Connection
         fields = ('connected_user',)

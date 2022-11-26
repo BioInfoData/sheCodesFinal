@@ -98,12 +98,17 @@ def babysitter_details(request):
 @login_required
 def connections_view(request):
     if request.method == 'POST':
-        print(request.user)
+        #print(request.user.username)
+        print(type(request.POST['connected_user']))
+        print(request.POST)
         user_connections = Connection.objects.create(username=request.user.username)
-                                               #      connected_user=request.POST['connected_user'])
         user_connections.save()
-        for connected in request.POST['connected_user']:
-            user_connections.connected_user.add(connected)
+        users_to_add = request.POST.getlist('connected_user')
+        print(users_to_add)
+        for connected_id in users_to_add:
+            connected_profile = Profile.objects.get(id=connected_id)
+            print(connected_profile)
+            user_connections.connected_user.add(connected_profile)
 
         return redirect('homepage')
     else:
