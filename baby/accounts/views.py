@@ -98,20 +98,23 @@ def babysitter_details(request):
 @login_required
 def connections_view(request):
     if request.method == 'POST':
-        #print(request.user.username)
-        print(type(request.POST['connected_user']))
-        print(request.POST)
         user_connections = Connection.objects.create(username=request.user.username)
         user_connections.save()
         users_to_add = request.POST.getlist('connected_user')
-        print(users_to_add)
         for connected_id in users_to_add:
             connected_profile = Profile.objects.get(id=connected_id)
-            print(connected_profile)
             user_connections.connected_user.add(connected_profile)
 
-        return redirect('homepage')
+        return redirect('accounts:wellcome')
     else:
         user_profile = Profile.objects.get(user=request.user) # use the type info from profile to present only parent/babysitter
         connection_form = ConnectionForm(user_profile=user_profile)
         return render(request, "accounts/connections.html", {'connection_form': connection_form})
+
+@login_required
+def feed_view(request, account):
+    return render(request, 'accounts/feed.html')
+
+@login_required
+def wellcome_view(request, account):
+    return render(request, 'accounts/wellcome.html')
