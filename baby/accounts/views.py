@@ -43,7 +43,7 @@ def singup_view(request):
 
 
 
-@login_required
+@login_required(login_url='accounts:login_form')
 def settings_view(request):
 
     if request.method == 'POST':
@@ -83,7 +83,7 @@ def settings_view(request):
         profile_form = ProfileForm()
         return render(request, "accounts/general_settings.html", {'profile_form': profile_form})
 
-@login_required
+@login_required(login_url='accounts:login_form')
 def babysitter_details(request):
     if request.method == 'POST':
         user_details = Details.objects.get(user=request.user)
@@ -95,7 +95,7 @@ def babysitter_details(request):
         details_form = DetailsForm()
         return render(request, "accounts/babysitter_details.html", {'details_form': details_form})
 
-@login_required
+@login_required(login_url='accounts:login_form')
 def connections_view(request):
     if request.method == 'POST':
         user_connections = Connection.objects.create(username=request.user.username)
@@ -111,10 +111,48 @@ def connections_view(request):
         connection_form = ConnectionForm(user_profile=user_profile)
         return render(request, "accounts/connections.html", {'connection_form': connection_form})
 
-@login_required
-def feed_view(request, username):
-    return render(request, 'accounts/feed.html')
+@login_required(login_url='accounts:login_form')
+def info_view(request, username):
+    user = User.objects.get(username=username)
+    user_profile = Profile.objects.get(user=user)
+    if user_profile.type == "Babysitter":
+        bs_details = Details.objects.get(user=user)
+        return render(request, 'accounts/info_b.html', {'user_profile' : user_profile,
+                                                      'user_data' : user,
+                                                      'bs_details' : bs_details})
+    else:
+        return render(request, 'accounts/info_p.html', {'user_profile': user_profile,
+                                                      'user_data': user})
 
-@login_required
+@login_required(login_url='accounts:login_form')
 def wellcome_view(request):
-    return render(request, 'accounts/wellcome.html')
+    user_connections = Connection.objects.get(username=request.user.username)
+    connected = user_connections.connected_user.all()
+    list_connected = []
+    for con in connected:
+        list_connected.append(con.user.username)
+    return render(request, 'accounts/wellcome.html', {'list_connected' : list_connected})
+
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request,user)
+            if 'next' in request.POST:
+                return redirect(request.POST.get('next'))
+            else:
+                return redirect('accounts:wellcome')
+        else:
+            messages.info(request, 'username or password are incorrect')
+            return redirect('accounts:login_form')
+    else:
+        form = AuthenticationForm()
+        return render(request, 'accounts/login.html', {'form': form})
+
+
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect('homepage')

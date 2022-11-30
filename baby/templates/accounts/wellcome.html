@@ -3,8 +3,36 @@
 {% block content %}
 <h1>Hellow {{user}}</h1>
 
-<a href ="{% url 'accounts:feed' username=user.username %}">
-           Go go feed
+<h1> Wellcome to babyNet </h1>
+
+<a href ="{% url 'accounts:info' username=user.username %}">
+           Go to user info page
         </a>
+
+
+<p> Your connections:
+{% for con in list_connected %}
+<p><a href ="{% url 'accounts:info' username=con %}">
+    {{con}}
+</a></p>
+    {% endfor %}
+</p>
+
+
+{%for department in departments %}
+    <div class="department">
+        <a href ="{% url 'dep_detail' slug=department.slug %}">
+                <img src="{{department.thumb.url}}"
+                width="400"
+                height="250">
+            </a>
+        <p>
+            <a href ="{% url 'dep_detail' slug=department.slug %}">
+            {{department.department_id}}
+        </a>
+        </p>
+
+    </div>
+    {%endfor%}
 
 {% endblock %}

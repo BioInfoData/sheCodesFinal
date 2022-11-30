@@ -6,6 +6,21 @@
     <title>home</title>
 </head>
 <body>
+{% if user.is_authenticated %}
+<h1>hellow {{user}}</h1>
+                <li>
+                    <form class="logout-link" action="{% url 'accounts:logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+{% else %}
+
+<li><a href="{% url 'accounts:login_form' %}">Login</a></li>
+<li><a href="{% url 'accounts:singup_form' %}">Signup</a></li>
+
+{% endif %}
+
         {% block content %}
         {% endblock %}
 </body>

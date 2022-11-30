@@ -1,0 +1,15 @@
+{% extends 'base_layout.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<h1>username: {{user_data.username}}</h1>
+
+This is user info
+<p>Name: {{user_profile.name}}</p>
+<p>Email: {{user_profile.email}}</p>
+<p>Phone: {{user_profile.phone}}</p>
+<p>Type: {{user_profile.type}}</p>
+<p>Exp: {{bs_details.exp}}</p>
+<p>Birth: {{bs_details.birth}}</p>
+
+
+{% endblock %}

@@ -6,14 +6,14 @@ from datetime import date
 
 User = get_user_model()
 
+CHOICES_TYPE = (("Parent", "Parent"),
+                ("Babysitter", "Babysitter"))
+CHOICES_GENDER = (("Male", "Male"),
+                  ("Female", "Female"))
+
+
 # Create your models here.
 class Profile(models.Model):
-
-    CHOICES_TYPE = (("Parent","Parent"),
-                    ("Babysitter","Babysitter"))
-    CHOICES_GENDER = (("Male","Male"),
-                    ("Female","Female"))
-
 
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -42,6 +42,14 @@ class Details(models.Model):
 class Connection(models.Model):
     username = models.CharField(max_length = 100)
     connected_user = models.ManyToManyField(Profile, blank=True)
+
+    def __str__(self):
+        return str(self.username)
+
+class Search(models.Model):
+    username = models.CharField(max_length = 100)
+    min_exp = models.IntegerField(default=0, blank=True)
+    gender = models.CharField(max_length=300, choices=CHOICES_GENDER, blank=True)
 
     def __str__(self):
         return str(self.username)
