@@ -5,9 +5,19 @@
 
 <h1> Wellcome to babyNet </h1>
 
-<a href ="{% url 'accounts:info' username=user.username %}">
-           Go to user info page
-        </a>
+<p>
+    <a href ="{% url 'accounts:info' username=user.username %}">
+           Go to user info page</a>
+</p>
+
+<p>
+    {% if user_profile.type == "Parent" %}
+    <a href ="{% url 'accounts:connections_form' %}">
+           Add connections</a>
+    {% endif %}
+</p>
+
+
 
 
 <p> Your connections:

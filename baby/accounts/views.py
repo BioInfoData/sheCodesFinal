@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
-from .forms import ProfileForm, DetailsForm, ConnectionForm
+from .forms import ProfileForm, DetailsForm, ConnectionForm, SearchForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .models import Profile, Details, Connection
+from .models import Profile, Details, Connection, Search
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
@@ -50,6 +50,7 @@ def settings_view(request):
         user_profile = Profile.objects.get(user=request.user)
         user_profile.name = request.POST['name']
         user_profile.user = request.user
+        user_profile.username = request.user.username
         user_profile.type = request.POST['type']
         user_profile.gender = request.POST['gender']
         user_profile.phone = request.POST['phone'] #TODO check valid phone
@@ -71,7 +72,9 @@ def settings_view(request):
         if user_profile.type == "Babysitter":
             # create a Detail object for the new user
             user_model = User.objects.get(username=request.user)
-            new_details = Details.objects.create(user=user_model, userid=user_model.id)
+            new_details = Details.objects.create(user=user_model,
+                                                 userid=user_model.id,
+                                                 username=user_model.username)
             new_details.save()
 
             return redirect('accounts:details_form')
@@ -95,15 +98,29 @@ def babysitter_details(request):
         details_form = DetailsForm()
         return render(request, "accounts/babysitter_details.html", {'details_form': details_form})
 
+
+
 @login_required(login_url='accounts:login_form')
 def connections_view(request):
+
+    def get_connections(username):
+        try:
+            user_connections = Connection.objects.get(username=username)
+        except Connection.DoesNotExist:
+            user_connections = Connection.objects.create(username=username)
+            user_connections.save()
+        return user_connections
+
     if request.method == 'POST':
-        user_connections = Connection.objects.create(username=request.user.username)
-        user_connections.save()
+        user_connections = get_connections(request.user.username)
         users_to_add = request.POST.getlist('connected_user')
         for connected_id in users_to_add:
             connected_profile = Profile.objects.get(id=connected_id)
-            user_connections.connected_user.add(connected_profile)
+            user_connections.connected_user.add(connected_profile) # add to current user connections
+            # add to the connected user connections
+            connected_connections = get_connections(connected_profile.username)
+            user_profile = Profile.objects.get(username=request.user.username)
+            connected_connections.connected_user.add(user_profile)
 
         return redirect('accounts:wellcome')
     else:
@@ -115,23 +132,30 @@ def connections_view(request):
 def info_view(request, username):
     user = User.objects.get(username=username)
     user_profile = Profile.objects.get(user=user)
+    print(request.path.strip("/"))
     if user_profile.type == "Babysitter":
         bs_details = Details.objects.get(user=user)
-        return render(request, 'accounts/info_b.html', {'user_profile' : user_profile,
+        return render(request, 'accounts/info.html', {'user_profile' : user_profile,
                                                       'user_data' : user,
                                                       'bs_details' : bs_details})
     else:
-        return render(request, 'accounts/info_p.html', {'user_profile': user_profile,
+        return render(request, 'accounts/info.html', {'user_profile': user_profile,
                                                       'user_data': user})
 
 @login_required(login_url='accounts:login_form')
 def wellcome_view(request):
-    user_connections = Connection.objects.get(username=request.user.username)
-    connected = user_connections.connected_user.all()
+    user_profile = Profile.objects.get(user=request.user)
     list_connected = []
-    for con in connected:
-        list_connected.append(con.user.username)
-    return render(request, 'accounts/wellcome.html', {'list_connected' : list_connected})
+    try:
+        user_connections = Connection.objects.get(username=request.user.username)
+        connected = user_connections.connected_user.all()
+        for con in connected:
+            list_connected.append(con.user.username)
+    except Connection.DoesNotExist:
+        pass
+
+    return render(request, 'accounts/wellcome.html', {'list_connected' : list_connected,
+                                                      'user_profile' : user_profile})
 
 
 def login_view(request):
@@ -156,3 +180,16 @@ def logout_view(request):
     if request.method == "POST":
         logout(request)
         return redirect('homepage')
+
+
+@login_required(login_url='accounts:login_form')
+def search_view(request):
+    if request.method == 'POST':
+        gender = request.POST['gender']
+        #user_connections = Connection.objects.get(username=request.user.username)
+        #connected = user_connections.connected_user.filter(gender= gender)
+        return redirect('homepage')
+
+    else:
+        search_form = SearchForm()
+        return render(request, "accounts/search.html", {'search_form': search_form})

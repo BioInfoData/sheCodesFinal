@@ -1,10 +1,9 @@
 {% extends 'base_layout.html' %}s
 {% block content %}
-<h1>Settings</h1>
-
+<h1>Search</h1>
         <form method="post" style="margin-top: 1.3em;"  enctype="multipart/form-data">
 
-              {{ profile_form.as_p }}
+              {{ search_form.as_p }}
 
               {% csrf_token %}
                <p><button type="submit">Submit</button></p>

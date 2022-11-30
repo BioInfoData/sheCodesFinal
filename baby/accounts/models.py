@@ -15,8 +15,8 @@ CHOICES_GENDER = (("Male", "Male"),
 # Create your models here.
 class Profile(models.Model):
 
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    username=models.CharField(max_length = 100)
     userid = models.IntegerField()
     type = models.CharField(max_length=300, choices = CHOICES_TYPE,blank=True)
     gender = models.CharField(max_length=300, choices = CHOICES_GENDER,blank=True)
@@ -33,6 +33,7 @@ class Details(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     userid = models.IntegerField()
+    username = models.CharField(max_length=100)
     birth = models.DateField(default=date.today, blank=True)
     exp = models.IntegerField(default=0, blank=True) # years of experience
 
@@ -40,14 +41,14 @@ class Details(models.Model):
         return str(self.user)
 
 class Connection(models.Model):
-    username = models.CharField(max_length = 100)
+    username = models.CharField(max_length = 100, unique=True)
     connected_user = models.ManyToManyField(Profile, blank=True)
 
     def __str__(self):
         return str(self.username)
 
 class Search(models.Model):
-    username = models.CharField(max_length = 100)
+    username = models.CharField(max_length = 100, unique=True)
     min_exp = models.IntegerField(default=0, blank=True)
     gender = models.CharField(max_length=300, choices=CHOICES_GENDER, blank=True)
 

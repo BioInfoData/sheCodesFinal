@@ -8,6 +8,9 @@ This is user info
 <p>Email: {{user_profile.email}}</p>
 <p>Phone: {{user_profile.phone}}</p>
 <p>Type: {{user_profile.type}}</p>
-
+{% if user_profile.type == "Babysitter" %}
+    <p>Exp: {{bs_details.exp}}</p>
+    <p>Birth: {{bs_details.birth}}</p>
+{% endif %}
 
 {% endblock %}
