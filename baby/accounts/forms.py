@@ -18,7 +18,7 @@ class DetailsForm(forms.ModelForm):
 class SearchForm(forms.ModelForm):
     class Meta:
         model = Search
-        fields = ('min_exp', 'gender')
+        fields = ('min_exp', 'gender', 'message')
 
 class ConnectionForm(forms.ModelForm):
     def __init__(self, user_profile, *args, **kwargs): # this to include when want to present only parents/baby
@@ -47,3 +47,23 @@ class ConnectionForm(forms.ModelForm):
         fields = ('connected_user',)
 
 
+class RemoveConnectionForm(forms.ModelForm):
+    def __init__(self, user_profile, *args, **kwargs): # this to include when want to present only parents/baby
+        super(RemoveConnectionForm, self).__init__(*args, **kwargs)
+        list_connected = []
+        try:
+            user_connections = Connection.objects.get(username=user_profile.username)
+            connected = user_connections.connected_user.all()
+            for con in connected:
+                list_connected.append(con.user.username)
+        except Connection.DoesNotExist:
+            pass
+        queryset = Profile.objects.filter(username__in=list_connected)
+
+        self.fields['connected_user'] = forms.ModelMultipleChoiceField(queryset = queryset,
+                                                                       widget=forms.CheckboxSelectMultiple())
+
+
+    class Meta:
+        model = Connection
+        fields = ('connected_user',)

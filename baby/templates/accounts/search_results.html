@@ -1,0 +1,23 @@
+{% extends 'base_layout.html' %}s
+{% block content %}
+<h1>Search results</h1>
+
+{% if number_found == 0 %}
+<p> No results. Try other parameters</p>
+
+{% else %}
+
+<p> Your message was sent to {{number_found}} babysitters: </p>
+
+    {% for sel in list_selected %}
+        <p>{{sel}}</p>
+    {% endfor %}
+
+{% endif %}
+
+<p>
+    <a href ="{% url 'accounts:search_form' %}">
+           New search</a>
+</p>
+
+{% endblock %}

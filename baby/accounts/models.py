@@ -48,9 +48,23 @@ class Connection(models.Model):
         return str(self.username)
 
 class Search(models.Model):
-    username = models.CharField(max_length = 100, unique=True)
-    min_exp = models.IntegerField(default=0, blank=True)
-    gender = models.CharField(max_length=300, choices=CHOICES_GENDER, blank=True)
+    username = models.CharField(max_length = 100) #parent username
+    min_exp = models.IntegerField(default=0)
+    gender = models.CharField(max_length=300, choices=CHOICES_GENDER)
+    message = models.TextField()
+    results = models.ManyToManyField(Details, blank=True) # list of babysitter found with the params
+
 
     def __str__(self):
-        return str(self.username)
+        return str(self.id)
+
+class SearchMessage(models.Model):
+    search = models.ForeignKey(Search, on_delete=models.CASCADE)
+    babysitter = models.CharField(max_length = 100)
+    parent = models.CharField(max_length=100)
+    message = models.TextField()
+    date = models.DateTimeField(auto_now_add=True,null=True)
+
+
+    def __str__(self):
+        return str(self.id)

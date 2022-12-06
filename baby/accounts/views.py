@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
-from .forms import ProfileForm, DetailsForm, ConnectionForm, SearchForm
+from .forms import ProfileForm, DetailsForm, ConnectionForm, SearchForm, RemoveConnectionForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .models import Profile, Details, Connection, Search
+from .models import Profile, Details, Connection, Search, SearchMessage
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
@@ -98,12 +98,25 @@ def babysitter_details(request):
         details_form = DetailsForm()
         return render(request, "accounts/babysitter_details.html", {'details_form': details_form})
 
-
-
 @login_required(login_url='accounts:login_form')
-def connections_view(request):
+def remove_connections_view(request):
+    if request.method == 'POST':
+        user_connections = get_connections(request.user.username)
+        users_to_remove = request.POST.getlist('connected_user')
+        for connected_id in users_to_remove:
+            connected_profile = Profile.objects.get(id=connected_id)
+            user_connections.connected_user.remove(connected_profile)
+            # remove the connected user connections
+            connected_connections = get_connections(connected_profile.username)
+            user_profile = Profile.objects.get(username=request.user.username)
+            connected_connections.connected_user.remove(user_profile)
+        return redirect('accounts:wellcome')
+    else:
+        user_profile = Profile.objects.get(user=request.user)
+        remove_connection_form = RemoveConnectionForm(user_profile=user_profile)
+        return render(request, "accounts/remove.html", {'remove_connection_form': remove_connection_form})
 
-    def get_connections(username):
+def get_connections(username):
         try:
             user_connections = Connection.objects.get(username=username)
         except Connection.DoesNotExist:
@@ -111,6 +124,8 @@ def connections_view(request):
             user_connections.save()
         return user_connections
 
+@login_required(login_url='accounts:login_form')
+def connections_view(request):
     if request.method == 'POST':
         user_connections = get_connections(request.user.username)
         users_to_add = request.POST.getlist('connected_user')
@@ -181,14 +196,62 @@ def logout_view(request):
         logout(request)
         return redirect('homepage')
 
+@login_required(login_url='accounts:login_form')
+def search_res_view(request):
+    list_selected = request.session['list_selected']  # This was stored in the request in search view
+    number_found = len(list_selected)
+    return render(request, "accounts/search_results.html",
+                  {'list_selected': list_selected,
+                   'number_found' : number_found})
 
 @login_required(login_url='accounts:login_form')
 def search_view(request):
     if request.method == 'POST':
-        gender = request.POST['gender']
-        #user_connections = Connection.objects.get(username=request.user.username)
-        #connected = user_connections.connected_user.filter(gender= gender)
-        return redirect('homepage')
+        list_selected = []
+
+        try: # first get all connection of the user
+            user_connections = Connection.objects.get(username=request.user.username)
+        except Details.DoesNotExist:
+            return redirect('accounts:search_form')
+
+        try: # second - get the connection with the gender
+            connected = user_connections.connected_user.filter(gender= request.POST['gender'])
+            list_connected = []
+            for con in connected:
+                list_connected.append(con.user.username)
+        except Details.DoesNotExist:
+            return redirect('accounts:search_form')
+
+        # third - get the details of the selected babysitters and filter exp
+        try:
+            selected = Details.objects.filter(username__in=list_connected,
+                                                  exp__gte=int(request.POST['min_exp']))
+
+            for sel in selected:
+                list_selected.append(sel.username)
+
+            if len(list_selected) > 0: # if found matches
+                # 1. create search object
+                search = Search.objects.create(username=request.user.username,
+                                               gender=request.POST['gender'],
+                                               min_exp=int(request.POST['min_exp']),
+                                               message = request.POST['message'])
+                search.save()
+                search.results.set(selected)
+
+                # 2. create parent to babysitter message object
+                parent_message = SearchMessage.objects.create(search = search,
+                                                              parent = request.user.username,
+                                                              message = request.POST['message'],
+                                                              babysitter = sel.username)
+
+        except Details.DoesNotExist:
+            return redirect('accounts:search_form')
+
+        # case found a relevant connection
+        request.session['list_selected'] = list_selected # store in the request to set search res view
+        return redirect('accounts:search_res')
+
 
     else:
         search_form = SearchForm()

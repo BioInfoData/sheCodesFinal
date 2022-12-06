@@ -7,18 +7,25 @@
 
 <p>
     <a href ="{% url 'accounts:info' username=user.username %}">
-           Go to user info page</a>
+           My profile</a>
 </p>
 
 <p>
-    {% if user_profile.type == "Parent" %}
     <a href ="{% url 'accounts:connections_form' %}">
            Add connections</a>
-    {% endif %}
 </p>
 
+<p>
+    <a href ="{% url 'accounts:remove_connections_form' %}">
+           Remove connections</a>
+</p>
 
-
+{% if user_profile.type == "Parent" %}
+<p>
+    <a href ="{% url 'accounts:search_form' %}">
+           Find a babysitter</a>
+</p>
+{% endif %}
 
 <p> Your connections:
 {% for con in list_connected %}
