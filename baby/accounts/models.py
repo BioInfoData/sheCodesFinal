@@ -47,23 +47,30 @@ class Connection(models.Model):
     def __str__(self):
         return str(self.username)
 
+class Reply(models.Model): # babysitter reply messages - only when got reply. To add to Serach
+    babysitter = models.CharField(max_length=100)
+    message = models.TextField()
+
+    def __str__(self):
+        return str(self.id)
+
 class Search(models.Model):
     username = models.CharField(max_length = 100) #parent username
     min_exp = models.IntegerField(default=0)
     gender = models.CharField(max_length=300, choices=CHOICES_GENDER)
     message = models.TextField()
     results = models.ManyToManyField(Details, blank=True) # list of babysitter found with the params
-
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    reply = models.ManyToManyField(Reply, blank=True)  # list of babysitter replys
 
     def __str__(self):
         return str(self.id)
 
-class SearchMessage(models.Model):
+class SearchMessage(models.Model): # babysitter reply messages all - including to reply
     search = models.ForeignKey(Search, on_delete=models.CASCADE)
     babysitter = models.CharField(max_length = 100)
     parent = models.CharField(max_length=100)
-    message = models.TextField()
-    date = models.DateTimeField(auto_now_add=True,null=True)
+    message = models.TextField(blank=True)
 
 
     def __str__(self):

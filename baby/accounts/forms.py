@@ -1,4 +1,4 @@
-from .models import Profile, Details, Connection, Search
+from .models import Profile, Details, Connection, Search, SearchMessage
 from django import forms
 from django.db.models import Q
 
@@ -19,6 +19,16 @@ class SearchForm(forms.ModelForm):
     class Meta:
         model = Search
         fields = ('min_exp', 'gender', 'message')
+
+
+class ReplyForm(forms.ModelForm):
+    def __init__(self, parent_search, *args, **kwargs):
+        super(ReplyForm, self).__init__(*args, **kwargs)
+        self.fields['search'] = forms.ModelChoiceField(queryset=parent_search)
+
+    class Meta:
+        model = SearchMessage
+        fields = ('search', 'message')
 
 class ConnectionForm(forms.ModelForm):
     def __init__(self, user_profile, *args, **kwargs): # this to include when want to present only parents/baby

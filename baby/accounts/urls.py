@@ -14,5 +14,6 @@ urlpatterns = [
     path('wellcome/', views.wellcome_view, name='wellcome'),
     path('search/', views.search_view, name='search_form'),
     path('search_res/', views.search_res_view, name='search_res'),
+    path('feed/', views.feed_view, name='feed'),
     path('<str:username>/', views.info_view, name='info')
 ]

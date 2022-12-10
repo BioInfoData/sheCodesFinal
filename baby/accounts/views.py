@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
-from .forms import ProfileForm, DetailsForm, ConnectionForm, SearchForm, RemoveConnectionForm
+from .forms import ProfileForm, DetailsForm, ConnectionForm, SearchForm, RemoveConnectionForm, ReplyForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .models import Profile, Details, Connection, Search, SearchMessage
+from .models import Profile, Details, Connection, Search, SearchMessage, Reply
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
@@ -82,7 +82,6 @@ def settings_view(request):
         elif user_profile.type == "Parent":
             return redirect('accounts:connections_form')
     else:
-        #profile_form = ProfileForm(current_user=request.user) # TODO remove this. only example for
         profile_form = ProfileForm()
         return render(request, "accounts/general_settings.html", {'profile_form': profile_form})
 
@@ -196,6 +195,44 @@ def logout_view(request):
         logout(request)
         return redirect('homepage')
 
+
+@login_required(login_url='accounts:login_form')
+def feed_view(request):
+
+    if request.method == "POST":
+        reply = Reply.objects.create(babysitter = request.user.username,
+                            message = request.POST['message'])
+        search_mes = SearchMessage.objects.get(search=request.POST['search'],
+                                  babysitter = request.user.username)
+        search_mes.message= request.POST['message']
+        search_mes.save()
+
+        current_search = Search.objects.get(id=request.POST['search'])
+        current_search.reply.add(reply)
+        current_search.save()
+
+        return redirect("accounts:feed")
+
+    else:
+        profile = Profile.objects.get(username=request.user.username)
+        if profile.type == "Parent":
+            parent_search = Search.objects.all().filter(username=request.user.username)
+            # TODO order by search id
+            return render(request, "accounts/feed.html",
+                          {"parent_search": parent_search,
+                           "type" : "Parent"})
+        else:
+            reply_message = SearchMessage.objects.filter(babysitter=request.user.username)
+            id_search = reply_message.values_list('search', flat=True)
+            parent_search = Search.objects.all().filter(id__in=id_search) # TODO order by search id
+            reply_form = ReplyForm(parent_search=parent_search)
+            return render(request, "accounts/feed.html",
+                          {"parent_search": parent_search,
+                           "reply_form" : reply_form,
+                           "type" : "Babysitter"})
+
+
+
 @login_required(login_url='accounts:login_form')
 def search_res_view(request):
     list_selected = request.session['list_selected']  # This was stored in the request in search view
@@ -240,10 +277,12 @@ def search_view(request):
                 search.results.set(selected)
 
                 # 2. create parent to babysitter message object
-                parent_message = SearchMessage.objects.create(search = search,
-                                                              parent = request.user.username,
-                                                              message = request.POST['message'],
-                                                              babysitter = sel.username)
+                for babysitter_username in list_selected:
+                    reply_message = SearchMessage.objects.create(search = search,
+                                                                  parent = request.user.username,
+                                                                  message = "",
+                                                                  babysitter = babysitter_username)
+
 
         except Details.DoesNotExist:
             return redirect('accounts:search_form')

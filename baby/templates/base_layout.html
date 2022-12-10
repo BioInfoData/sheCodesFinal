@@ -7,7 +7,7 @@
 </head>
 <body>
 {% if user.is_authenticated %}
-<h1>hellow {{user}}</h1>
+<h1>hello {{user}}</h1>
                 <li>
                     <form class="logout-link" action="{% url 'accounts:logout' %}" method="post">
                         {% csrf_token %}

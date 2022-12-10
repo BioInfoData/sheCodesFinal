@@ -1,0 +1,29 @@
+{% extends 'base_layout.html' %}s
+{% block content %}
+<h1>feed</h1>
+
+This is feed
+
+{% for p in  parent_search %}
+
+<p><a href ="{% url 'accounts:info' username=p.username %}">
+    {{p.username}}</a>: {{p.message}} : {{p.id}} </p>
+
+    {% for r in  p.reply.all %}
+        <p><a href ="{% url 'accounts:info' username=r.babysitter %}">
+    {{r.babysitter}}</a> : {{r.message}}</p>
+    {% endfor %}
+{% endfor %}
+
+{% if type == "Babysitter" %}
+ <form method="post" style="margin-top: 1.3em;" >
+
+              {{ reply_form.as_p }}
+
+              {% csrf_token %}
+               <p><button type="submit">Submit</button></p>
+</form>
+{% endif %}
+
+
+{% endblock %}
