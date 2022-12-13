@@ -1,9 +1,16 @@
 {% extends 'base_layout.html' %}
 {% load widget_tweaks %}
 {% block content %}
-<h1>username: {{user_data.username}}</h1>
+<h1>User profile for {{user_data.username}}</h1>
 
-This is user info
+
+<div class="image-cropper">
+    <p><img src="{{user_profile.profileimg.url}}"
+               width = "200px"
+                height = "200px"
+                ></p>
+</div>
+
 <p>Name: {{user_profile.name}}</p>
 <p>Email: {{user_profile.email}}</p>
 <p>Phone: {{user_profile.phone}}</p>

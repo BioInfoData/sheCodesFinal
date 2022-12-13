@@ -1,6 +1,18 @@
 {% extends 'base_layout.html' %}s
 {% block content %}
 
-This is home
+<h1>Babysitter Network</h1>
+
+<p>This is a network connecting parents and babysitters.</p>
+<p> As a parent you can send requests to selected group of babysitters according
+    to specific parameters.</p>
+<p>As a babysitter you can get only relevant requests from parents you are familiar with.</p>
+<p>To going Babysitter Network please
+    <a href="{% url 'accounts:singup_form' %}">signup</a>
+</p>
+<p>If you already have a account please
+    <a href="{% url 'accounts:login_form' %}">login</a>
+</p>
+
 
 {% endblock %}

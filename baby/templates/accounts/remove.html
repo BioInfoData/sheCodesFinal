@@ -1,11 +1,12 @@
 {% extends 'base_layout.html' %}s
 {% block content %}
-<h1>Details</h1>
-        <form method="post" style="margin-top: 1.3em;"  enctype="multipart/form-data">
-
-              {{ remove_connection_form.as_p }}
-
-              {% csrf_token %}
-              <p><button type="submit">Submit</button></p>
-        </form>
+<h1>Remove connections</h1>
+<p>Select users from the list to remove from your network</p>
+<div class ="user_form">
+    <form method="post">
+        {% csrf_token %}
+        {{ remove_connection_form }}
+        <p><button type="submit">Submit</button></p>
+    </form>
+</div>
 {% endblock %}

@@ -4,24 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <title>home</title>
+    <link rel="stylesheet" href="{% static 'mystyle2.css' %}">
 </head>
 <body>
-{% if user.is_authenticated %}
-<h1>hello {{user}}</h1>
-                <li>
-                    <form class="logout-link" action="{% url 'accounts:logout' %}" method="post">
+<div class="wrapper">
+    <nav>
+        <ul>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+        {% if user.is_authenticated %}
+            <li>
+            <form class="logout-link" action="{% url 'accounts:logout' %}" method="post">
                         {% csrf_token %}
-                        <button type="submit">Logout</button>
-                    </form>
-                </li>
-{% else %}
-
-<li><a href="{% url 'accounts:login_form' %}">Login</a></li>
-<li><a href="{% url 'accounts:singup_form' %}">Signup</a></li>
-
-{% endif %}
-
-        {% block content %}
-        {% endblock %}
+            <button type="submit">Logout</button>
+            </form>
+            </li>
+            <li><a href="{% url 'accounts:wellcome' %}">Hello {{user}}</a></li>
+        {% else %}
+            <li><a href="{% url 'accounts:login_form' %}">Login</a></li>
+            <li><a href="{% url 'accounts:singup_form' %}">Signup</a></li>
+        {% endif %}
+        </ul>
+    </nav>
+    {% block content %}
+    {% endblock %}
+</div>
 </body>
 </html>
