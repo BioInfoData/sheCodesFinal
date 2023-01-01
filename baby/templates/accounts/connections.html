@@ -6,7 +6,8 @@
 <div class ="user_form">
      <form method="post" >
          {% csrf_token %}
-         {{connection_form }}
+         <span class="bold">{{connection_form }}</span>
+
          <p><button type="submit">Submit</button></p>
     </form>
 </div>

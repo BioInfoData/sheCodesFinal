@@ -4,56 +4,49 @@
 
 <h1> Wellcome to babyNet </h1>
 
-<p>
+<div class="image-cropper-wellcome">
+    <p><img src="{{user_profile.profileimg.url}}"
+               width = "250px"
+               height =  "auto"
+                ></p>
+</div>
+
+
+
+<div class="wellcome">
+
+
     <a href ="{% url 'accounts:info' username=user.username %}">
            My profile</a>
-</p>
 
-<p>
     <a href ="{% url 'accounts:feed' %}">
            Go to feed</a>
-</p>
 
-<p>
     <a href ="{% url 'accounts:connections_form' %}">
            Add connections</a>
-</p>
 
-<p>
+
     <a href ="{% url 'accounts:remove_connections_form' %}">
            Remove connections</a>
-</p>
+
 
 {% if user_profile.type == "Parent" %}
-<p>
+
     <a href ="{% url 'accounts:search_form' %}">
            Find a babysitter</a>
-</p>
+
 {% endif %}
 
-<p> Your connections:
-{% for con in list_connected %}
-<p><a href ="{% url 'accounts:info' username=con %}">
-    {{con}}
-</a></p>
+</div>
+
+<h2><span class="bold"> Your connections: </span></h2>
+
+<div class="con">
+    {% for con in list_connected %}
+    <a href ="{% url 'accounts:info' username=con %}">
+    {{con}}</a>
     {% endfor %}
-</p>
 
-
-{%for department in departments %}
-    <div class="department">
-        <a href ="{% url 'dep_detail' slug=department.slug %}">
-                <img src="{{department.thumb.url}}"
-                width="400"
-                height="250">
-            </a>
-        <p>
-            <a href ="{% url 'dep_detail' slug=department.slug %}">
-            {{department.department_id}}
-        </a>
-        </p>
-
-    </div>
-    {%endfor%}
+</div>
 
 {% endblock %}

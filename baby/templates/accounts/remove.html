@@ -5,7 +5,7 @@
 <div class ="user_form">
     <form method="post">
         {% csrf_token %}
-        {{ remove_connection_form }}
+        <span class="bold">{{ remove_connection_form }}</span>
         <p><button type="submit">Submit</button></p>
     </form>
 </div>

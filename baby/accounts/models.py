@@ -18,11 +18,11 @@ class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     username=models.CharField(max_length = 100)
     userid = models.IntegerField()
-    type = models.CharField(max_length=300, choices = CHOICES_TYPE,blank=True)
-    gender = models.CharField(max_length=300, choices = CHOICES_GENDER,blank=True)
+    type = models.CharField(max_length=300, choices = CHOICES_TYPE)
+    gender = models.CharField(max_length=300, choices = CHOICES_GENDER)
     name = models.CharField(max_length=100)
-    email = models.CharField(max_length=100,blank=True)
-    phone = models.IntegerField(default=0,blank=True)
+    email = models.CharField(max_length=100)
+    phone = models.CharField(blank=True,max_length=20)
     profileimg = models.ImageField(default='defaul_profile.jpg', blank=True) # TODO change the default img in assets
 
 
@@ -34,8 +34,8 @@ class Details(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     userid = models.IntegerField()
     username = models.CharField(max_length=100)
-    birth = models.DateField(default=date.today, blank=True)
-    exp = models.IntegerField(default=0, blank=True) # years of experience
+    birth = models.DateField(default=date.today)
+    exp = models.IntegerField(default=0) # years of experience
 
     def __str__(self):
         return str(self.user)
@@ -56,11 +56,10 @@ class Reply(models.Model): # babysitter reply messages - only when got reply. To
 
 class Search(models.Model):
     username = models.CharField(max_length = 100) #parent username
-    min_exp = models.IntegerField(default=0)
+    min_exp = models.IntegerField()
     gender = models.CharField(max_length=300, choices=CHOICES_GENDER)
     message = models.TextField()
     results = models.ManyToManyField(Details, blank=True) # list of babysitter found with the params
-    date = models.DateTimeField(auto_now_add=True, null=True)
     reply = models.ManyToManyField(Reply, blank=True)  # list of babysitter replys
 
     def __str__(self):

@@ -5,16 +5,24 @@
 
 {% for p in  parent_search %}
 
-<p><a href ="{% url 'accounts:info' username=p.username %}">
-    {{p.username}}</a>: {{p.message}} : {{p.id}} </p>
+
+<p class="message_p">
+    <span class="username">
+        From: <a href ="{% url 'accounts:info' username=p.username %}">{{p.username}}</a></span>
+    <br> {{p.message}} <br>
+    <span class="smaller"> message ID: {{p.id}}</span> </p>
 
     {% for r in  p.reply.all %}
-        <p><a href ="{% url 'accounts:info' username=r.babysitter %}">
-    {{r.babysitter}}</a> : {{r.message}}</p>
+    <p class="reply">
+         <span class="username">
+        From: <a href ="{% url 'accounts:info' username=r.babysitter %}">{{r.babysitter}}</a></span>
+        <br> {{r.message}}</p>
     {% endfor %}
 {% endfor %}
 
 {% if type == "Babysitter" %}
+<p> <span  class ="bold"> To reply select a message ID and submit your reply: </span> </p>
+
  <form method="post" style="margin-top: 1.3em;" >
 
               {{ reply_form.as_p }}

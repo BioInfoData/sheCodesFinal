@@ -10,10 +10,8 @@ h1 {
 }
 
 h2 {
-  color: LightCoral;
+  color: DarkSlateGray;
   text-align: center;
-  margin-right: 300px;
-  margin-lft: 250px;
 }
 
 p {
@@ -24,6 +22,34 @@ p {
     text-align:justify;
 }
 
+
+p.reply {
+  background-color: #ffe6cc;
+  color: black;
+   margin-left: 500px;
+   margin-right: 300px;
+}
+
+p.message_p {
+  background-color: #F0C298;
+  color: black;
+  margin-left: 400px;
+  margin-right: 400px;
+}
+
+span.smaller{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+span.username{
+    font-weight: bold;
+}
+
+span.bold{
+    font-weight: bold;
+}
+
 .user_form form {
     margin-right: 200px;
     margin-left: 150px;
@@ -31,6 +57,7 @@ p {
     color:Teal;
     text-align:justify;
 }
+
 button {
   background: CadetBlue;
   border: none;
@@ -74,3 +101,44 @@ button:hover {
   background-color: #111;
 }
 
+.wellcome {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 20px;
+}
+
+.wellcome a{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 10px 10px;
+  margin: 5px;
+  text-decoration: none;
+  background-color: #ff9999;
+  font-size: 25px;
+  margin-right: 400px;
+  margin-left: 350px;
+}
+
+.con {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5px;
+}
+
+.con a{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 1px 1px;
+  margin: 1px;
+  text-decoration: none;
+  background-color: #b3b3ff;
+  font-size: 25px;
+  margin-right: 100px;
+  margin-left: 100px;
+}
+
+.image-cropper-wellcome{
+text-align: center;
+}
