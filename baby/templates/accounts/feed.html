@@ -5,19 +5,36 @@
 
 {% for p in  parent_search %}
 
-
 <p class="message_p">
     <span class="username">
         From: <a href ="{% url 'accounts:info' username=p.username %}">{{p.username}}</a></span>
     <br> {{p.message}} <br>
     <span class="smaller"> message ID: {{p.id}}</span> </p>
 
-    {% for r in  p.reply.all %}
-    <p class="reply">
-         <span class="username">
-        From: <a href ="{% url 'accounts:info' username=r.babysitter %}">{{r.babysitter}}</a></span>
-        <br> {{r.message}}</p>
-    {% endfor %}
+    {% if type == "Babysitter" %}
+
+        {% for r in  p.reply.all %}
+            {% if r.babysitter == user.username %}
+            <p class="reply">
+             <span class="username">
+            From: <a href ="{% url 'accounts:info' username=r.babysitter %}">{{r.babysitter}}</a></span>
+            <br> {{r.message}}
+            </p>
+            {% endif %}
+        {% endfor %}
+
+    {% else %}
+
+        {% for r in  p.reply.all %}
+            <p class="reply">
+             <span class="username">
+            From: <a href ="{% url 'accounts:info' username=r.babysitter %}">{{r.babysitter}}</a></span>
+            <br> {{r.message}}
+            </p>
+        {% endfor %}
+
+    {% endif %}
+
 {% endfor %}
 
 {% if type == "Babysitter" %}
