@@ -4,7 +4,7 @@ from django.contrib.auth import login, logout
 from .forms import ProfileForm, DetailsForm, ConnectionForm, SearchForm, RemoveConnectionForm, ReplyForm
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from .models import Profile, Details, Connection, Search, SearchMessage, Reply
+from .models import Profile, Details, Connection, Search, ReplySearch, Reply
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
@@ -205,8 +205,8 @@ def feed_view(request):
     if request.method == "POST":
         reply = Reply.objects.create(babysitter = request.user.username,
                             message = request.POST['message'])
-        search_mes = SearchMessage.objects.get(search=request.POST['search'],
-                                  babysitter = request.user.username)
+        search_mes = ReplySearch.objects.get(search=request.POST['search'],
+                                             babysitter = request.user.username)
         search_mes.message= request.POST['message']
         search_mes.save()
 
@@ -225,7 +225,7 @@ def feed_view(request):
                           {"parent_search": parent_search,
                            "type" : "Parent"})
         else:
-            reply_message = SearchMessage.objects.filter(babysitter=request.user.username)
+            reply_message = ReplySearch.objects.filter(babysitter=request.user.username)
             id_search = reply_message.values_list('search', flat=True)
             parent_search = Search.objects.all().filter(id__in=id_search) # TODO order by search id
             reply_form = ReplyForm(parent_search=parent_search)
@@ -281,10 +281,10 @@ def search_view(request):
 
                 # 2. create parent to babysitter message object
                 for babysitter_username in list_selected:
-                    reply_message = SearchMessage.objects.create(search = search,
-                                                                  parent = request.user.username,
-                                                                  message = "",
-                                                                  babysitter = babysitter_username)
+                    reply_message = ReplySearch.objects.create(search = search,
+                                                               parent = request.user.username,
+                                                               message = "",
+                                                               babysitter = babysitter_username)
 
 
         except Details.DoesNotExist:

@@ -65,7 +65,7 @@ class Search(models.Model):
     def __str__(self):
         return str(self.id)
 
-class SearchMessage(models.Model): # babysitter reply messages all - including to reply
+class ReplySearch(models.Model): # babysitter reply messages all - including no reply
     search = models.ForeignKey(Search, on_delete=models.CASCADE)
     babysitter = models.CharField(max_length = 100)
     parent = models.CharField(max_length=100)

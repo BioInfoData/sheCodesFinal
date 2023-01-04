@@ -1,4 +1,4 @@
-from .models import Profile, Details, Connection, Search, SearchMessage
+from .models import Profile, Details, Connection, Search, ReplySearch
 from django import forms
 from django.db.models import Q
 
@@ -27,7 +27,7 @@ class ReplyForm(forms.ModelForm):
         self.fields['search'] = forms.ModelChoiceField(queryset=parent_search)
 
     class Meta:
-        model = SearchMessage
+        model = ReplySearch
         fields = ('search', 'message')
 
 class ConnectionForm(forms.ModelForm):
