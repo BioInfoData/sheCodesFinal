@@ -1,16 +1,16 @@
 body {
-    background-color: MintCream;
+    background-color: #EAF3FA;
     font-size: x-large;
 
     }
 
 h1 {
-  color: DarkSlateGray;
+  color: #052F4F;
   text-align: center;
 }
 
 h2 {
-  color: DarkSlateGray;
+  color: #052F4F;
   text-align: center;
 }
 
@@ -18,23 +18,27 @@ p {
     margin-right: 200px;
     margin-left: 150px;
     line-height: 200%;
-    color:Teal;
+    color:#2876A8;
     text-align:justify;
 }
 
 
 p.reply {
-  background-color: #ffe6cc;
+  background-color: #E8BCEA;
   color: black;
    margin-left: 500px;
    margin-right: 300px;
+   padding: 20px;
+   border-radius: 20px;
 }
 
 p.message_p {
-  background-color: #F0C298;
+  background-color: #ffe6cc;
   color: black;
   margin-left: 400px;
   margin-right: 400px;
+  padding: 20px;
+  border-radius: 20px;
 }
 
 span.smaller{
@@ -54,18 +58,19 @@ span.bold{
     margin-right: 200px;
     margin-left: 150px;
     line-height: 200%;
-    color:Teal;
+    color:#2876A8;
     text-align:justify;
 }
 
 button {
-  background: CadetBlue;
+  background: #77A6C9;
   border: none;
   color: white;
   padding: 14px 16px;
   text-decoration: none;
   font-family: "Times New Roman", Times, serif;
   font-size: x-large;
+  border-radius: 20px;
 }
 
 
@@ -73,7 +78,9 @@ button:hover {
   background-color: #111;
 }
 
-
+.logout-link {
+    border-radius: 0;
+}
 
 
 .wrapper nav ul {
@@ -81,7 +88,7 @@ button:hover {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: CadetBlue;
+  background-color: #77A6C9;
 }
 
 .wrapper nav li {
@@ -111,13 +118,14 @@ button:hover {
   display: block;
   color: white;
   text-align: center;
-  padding: 10px 10px;
+  padding: 20px;
   margin: 5px;
   text-decoration: none;
   background-color: #ff9999;
   font-size: 25px;
-  margin-right: 400px;
-  margin-left: 350px;
+  margin-right: 500px;
+  margin-left: 450px;
+  border-radius: 20px;
 }
 
 .con {
@@ -137,6 +145,8 @@ button:hover {
   font-size: 25px;
   margin-right: 100px;
   margin-left: 100px;
+  border-radius: 20px;
+  padding: 10px;
 }
 
 .image-cropper-wellcome{

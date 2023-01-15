@@ -13,9 +13,9 @@
             <li><a href="{% url 'homepage' %}">Home</a></li>
         {% if user.is_authenticated %}
             <li>
-            <form class="logout-link" action="{% url 'accounts:logout' %}" method="post">
+            <form  action="{% url 'accounts:logout' %}" method="post">
                         {% csrf_token %}
-            <button type="submit">Logout</button>
+            <button class="logout-link" type="submit">Logout</button>
             </form>
             </li>
             <li><a href="{% url 'accounts:wellcome' %}">Hello {{user}}</a></li>
