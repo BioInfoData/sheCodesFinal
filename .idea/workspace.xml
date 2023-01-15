@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9920d9e9-7ce8-44fe-b484-5d4c8be617f3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baby/assets/mystyle2.css" beforeDir="false" afterPath="$PROJECT_DIR$/baby/assets/mystyle2.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/baby/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/baby/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/baby/templates/base_layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/baby/templates/base_layout.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
