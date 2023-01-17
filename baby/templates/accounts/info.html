@@ -3,24 +3,26 @@
 {% block content %}
 <h1>User profile for {{user_data.username}}</h1>
 
+<div class="user-profile">
 
-<div class="image-cropper">
-    <p><img src="{{user_profile.profileimg.url}}"
-               width = "250px"
-               height =  "auto";
-                ></p>
-</div>
+    <div class ="profile-img">
+        <br><img src="{{user_profile.profileimg.url}}"
+            width = "400px"
+            height =  "auto"
+        ></br>
+    </div>
 
-<div class="info">
-<p><span class ="bold">Name: </span>{{user_profile.name}}</p>
-<p><span class ="bold">Email: </span>{{user_profile.email}}</p>
-<p><span class ="bold">Phone: </span>{{user_profile.phone}}</p>
-<p><span class ="bold">Type: </span>{{user_profile.type}}</p>
-<p><span class ="bold">Gender: </span>{{user_profile.gender}}</p>
-{% if user_profile.type == "Babysitter" %}
-    <p><span class ="bold">Years of experience: </span>{{bs_details.exp}}</p>
-    <p><span class ="bold">Birth: </span>{{bs_details.birth}}</p>
-{% endif %}
+    <div class = "info">
+        <br><span class ="bold">Name: </span>{{user_profile.name}}</br>
+        <br><span class ="bold">Email: </span>{{user_profile.email}}</br>
+        <br><span class ="bold">Phone: </span>{{user_profile.phone}}</br>
+        <br><span class ="bold">Type: </span>{{user_profile.type}}</br>
+        <br><span class ="bold">Gender: </span>{{user_profile.gender}}</br>
+        {% if user_profile.type == "Babysitter" %}
+        <br><span class ="bold">Years of experience: </span>{{bs_details.exp}}</br>
+        <br><span class ="bold">Birth: </span>{{bs_details.birth}}</br>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}

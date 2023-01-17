@@ -1,6 +1,6 @@
 body {
     background-color: #EAF3FA;
-    font-size: x-large;
+    font-size: 30px;
 
     }
 
@@ -50,7 +50,7 @@ span.username{
     font-weight: bold;
 }
 
-span.bold{
+.bold{
     font-weight: bold;
 }
 
@@ -69,7 +69,7 @@ button {
   padding: 14px 16px;
   text-decoration: none;
   font-family: "Times New Roman", Times, serif;
-  font-size: x-large;
+  font-size: 30;
   border-radius: 20px;
 }
 
@@ -80,6 +80,7 @@ button:hover {
 
 .logout-link {
     border-radius: 0;
+    font-size: 30px;
 }
 
 
@@ -103,52 +104,65 @@ button:hover {
   text-decoration: none;
 }
 
-/* Change the link color to #111 (black) on hover */
 .wrapper nav li a:hover {
   background-color: #111;
 }
 
-.wellcome {
-    display: grid;
-    grid-template-columns: repeat(1, 1fr);
-    grid-gap: 20px;
-}
 
 .wellcome a{
   display: block;
   color: white;
   text-align: center;
   padding: 20px;
-  margin: 5px;
+  margin: 10px;
   text-decoration: none;
   background-color: #ff9999;
-  font-size: 25px;
-  margin-right: 500px;
-  margin-left: 450px;
+  font-size: 35px;
   border-radius: 20px;
 }
-
-.con {
+.wellcome-wrapper{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 5px;
+  grid-template-columns: repeat(3, 1fr);;
+
 }
 
 .con a{
   display: block;
   color: white;
   text-align: center;
-  padding: 1px 1px;
-  margin: 1px;
+  margin-bottom: 10px;
   text-decoration: none;
   background-color: #b3b3ff;
   font-size: 25px;
-  margin-right: 100px;
-  margin-left: 100px;
   border-radius: 20px;
   padding: 10px;
 }
 
-.image-cropper-wellcome{
-text-align: center;
+.con {
+    margin-left:100px;
+    margin-right:100px;
+}
+
+.con h2{
+    color: #b3b3ff;
+}
+
+.user-info {
+    text-align: center;
+    color:#2876A8;
+}
+
+img {
+  border-radius: 20%;
+}
+
+.profile-img {
+    text-align:center;
+ }
+
+.user-profile{
+    color:#2876A8;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
 }

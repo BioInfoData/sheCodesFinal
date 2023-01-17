@@ -4,42 +4,54 @@
 
 <h1> Wellcome to babyNet </h1>
 
+<div class ="wellcome-wrapper">
 
+    <div class ="user-info bold">
+        <br><img src="{{user_profile.profileimg.url}}"
+        width = "250px"
+        height =  "auto"
+        ></br>
+        <br>{{user_profile.name}}</br>
+        <br>{{user_profile.email}}</br>
+        <br>{{user_profile.phone}}</br>
+    </div>
 
-<div class="wellcome">
+    <div class="wellcome">
 
-
-    <a href ="{% url 'accounts:info' username=user.username %}">
+        <a href ="{% url 'accounts:info' username=user.username %}">
            My profile</a>
 
-    <a href ="{% url 'accounts:feed' %}">
+        <a href ="{% url 'accounts:feed' %}">
            Go to feed</a>
 
-    <a href ="{% url 'accounts:connections_form' %}">
+        <a href ="{% url 'accounts:connections_form' %}">
            Add connections</a>
 
 
-    <a href ="{% url 'accounts:remove_connections_form' %}">
+        <a href ="{% url 'accounts:remove_connections_form' %}">
            Remove connections</a>
 
 
-{% if user_profile.type == "Parent" %}
+        {% if user_profile.type == "Parent" %}
 
-    <a href ="{% url 'accounts:search_form' %}">
+        <a href ="{% url 'accounts:search_form' %}">
            Find a babysitter</a>
 
-{% endif %}
+        {% endif %}
+
+    </div>
+
+    <div class="con">
+        <h2 class="bold"> My connections </h2>
+        {% for con in list_connected %}
+        <a href ="{% url 'accounts:info' username=con %}">
+        {{con}}</a>
+        {% endfor %}
+
+    </div>
 
 </div>
 
-<h2><span class="bold"> Your connections: </span></h2>
 
-<div class="con">
-    {% for con in list_connected %}
-    <a href ="{% url 'accounts:info' username=con %}">
-    {{con}}</a>
-    {% endfor %}
-
-</div>
 
 {% endblock %}
