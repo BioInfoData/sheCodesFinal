@@ -59,9 +59,6 @@ def settings_view(request):
          # TODO this is not working. check email mot exists
         user_profile.email = email #TODO check valid email
 
-        print("##############################3")
-        print()
-        print(request.FILES)
 
         if "profileimg" not in request.POST.keys():
             upload = request.FILES['profileimg']
